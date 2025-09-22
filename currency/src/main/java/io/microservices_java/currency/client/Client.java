@@ -1,6 +1,7 @@
 package io.microservices_java.currency.client;
 
 import io.microservices_java.currency.config.AppProperties;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.util.UriComponentsBuilder;
@@ -13,6 +14,7 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
 @Component
+@RequiredArgsConstructor
 public class Client implements HttpClientInterface {
 
     public static final String DATE_PATTERN = "dd/MM/yyyy";
@@ -21,8 +23,8 @@ public class Client implements HttpClientInterface {
 
     public static final String dateReq = "date_req";
 
-    @Autowired
-    public AppProperties properties;
+
+    private final AppProperties properties;
 
     @Override
     public String requestByDate(LocalDate date) {
