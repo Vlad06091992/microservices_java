@@ -1,6 +1,7 @@
 package io.microservices_java.currency.controller;
 
 import io.microservices_java.currency.service.CbrService;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -13,10 +14,10 @@ import java.util.concurrent.ExecutionException;
 
 @RestController
 @RequestMapping("currency")
+@RequiredArgsConstructor
 public class AppController {
 
-    @Autowired
-    private CbrService service;
+    private final CbrService service;
 
     @GetMapping("/rate/{code}")
     public BigDecimal currencyRateByCode(@PathVariable("code") String code) throws ExecutionException {
