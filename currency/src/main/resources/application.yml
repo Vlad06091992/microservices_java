@@ -1,0 +1,3 @@
+app:
+  variables:
+    url: http://cbr.ru/scripts/XML_daily.asp
