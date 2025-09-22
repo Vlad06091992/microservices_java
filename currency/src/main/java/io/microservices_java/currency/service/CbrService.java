@@ -1,4 +1,4 @@
-package io.microservices_java.currency;
+package io.microservices_java.currency.service;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
