@@ -1,0 +1,28 @@
+spring:
+  application:
+    name: processing
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/processing
+    username: java_user
+    password: java_password
+
+    hikari:
+      connection-timeout: 20000      # время ожидания соединения (мс)
+      minimum-idle: 5                # минимальное число простаивающих соединений
+      maximum-pool-size: 12          # максимальный размер пула
+      idle-timeout: 300000           # время простоя соединения (мс)
+      max-lifetime: 1200000          # время жизни соединения (мс)
+      auto-commit: true              # автоматический commit транзакций
+
+
+
+server:
+  port: 3005
+
+#  flyway:
+#    enabled: true
+#    locations: classpath:db
+#    url: jdbc:postgresql://localhost:5432/processing
+#    username: java_user
+#    password: java_password
