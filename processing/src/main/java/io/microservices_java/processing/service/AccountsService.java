@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.UUID;
 
 @Service
 @RequiredArgsConstructor
@@ -54,6 +55,17 @@ public class AccountsService {
         to.setBalance(to.getBalance().add(quantity));
         accountsRepository.save(from);
         accountsRepository.save(to);
+    }
+
+    @Transactional
+    public Account addMoneyToAccount(UUID id, UUID accountId, BigDecimal money) {
+        Account account = accountsRepository.findByIdForUpdate(accountId)
+                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+
+        account.setBalance(account.getBalance().add(money));
+        accountsRepository.save(account);
+
+        return account;
     }
 
 }

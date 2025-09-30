@@ -1,16 +1,15 @@
 package io.microservices_java.processing.controller;
 
+import io.microservices_java.processing.dto.AddMoneyToAccountDTO;
 import io.microservices_java.processing.dto.NewAccountDTO;
 import io.microservices_java.processing.dto.TransferMoneyDTO;
 import io.microservices_java.processing.model.Account;
 import io.microservices_java.processing.service.AccountsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
 @RestController
@@ -23,6 +22,13 @@ public class AppController {
     @PostMapping("/account")
     public Account createAccount(@RequestBody NewAccountDTO account) throws ExecutionException {
         return this.service.createNewAccount(account);
+    }
+
+    @PutMapping("/account/addMoney/{id}")
+    public Account addMoneyToAccount(
+            @RequestBody AddMoneyToAccountDTO data, @PathVariable UUID id
+    ) {
+        return this.service.addMoneyToAccount(id,data.getUid(),data.getQuantity());
     }
 
 
