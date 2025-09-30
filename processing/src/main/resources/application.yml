@@ -2,27 +2,37 @@ spring:
   application:
     name: processing
 
+  jpa:
+    show-sql: false       # Hibernate SQL можно отключить, будем смотреть через P6Spy
+    properties:
+      hibernate.format_sql: true
+      hibernate.use_sql_comments: true
+
   datasource:
-    url: jdbc:postgresql://localhost:5432/processing
+    url: jdbc:p6spy:postgresql://localhost:5432/processing
     username: java_user
     password: java_password
+    driver-class-name: com.p6spy.engine.spy.P6SpyDriver
 
     hikari:
-      connection-timeout: 20000      # время ожидания соединения (мс)
-      minimum-idle: 5                # минимальное число простаивающих соединений
-      maximum-pool-size: 12          # максимальный размер пула
-      idle-timeout: 300000           # время простоя соединения (мс)
-      max-lifetime: 1200000          # время жизни соединения (мс)
-      auto-commit: true              # автоматический commit транзакций
+      auto-commit: false
+      connection-timeout: 20000
+      minimum-idle: 5
+      maximum-pool-size: 12
+      idle-timeout: 300000
+      max-lifetime: 1200000
 
-
+logging:
+  level:
+    com.p6spy.engine.spy: DEBUG
+    org.springframework.transaction: DEBUG
 
 server:
   port: 3005
 
-#  flyway:
-#    enabled: true
-#    locations: classpath:db
-#    url: jdbc:postgresql://localhost:5432/processing
-#    username: java_user
-#    password: java_password
+# flyway:
+#   enabled: true
+#   locations: classpath:db
+#   url: jdbc:postgresql://localhost:5432/processing
+#   username: java_user
+#   password: java_password
