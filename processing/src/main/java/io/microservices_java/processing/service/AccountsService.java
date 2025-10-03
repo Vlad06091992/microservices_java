@@ -1,11 +1,12 @@
 package io.microservices_java.processing.service;
 
 import io.microservices_java.processing.dto.NewAccountDTO;
-import io.microservices_java.processing.dto.TransferMoneyDTO;
 import io.microservices_java.processing.model.Account;
 import io.microservices_java.processing.repository.AccountsRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
@@ -30,42 +31,48 @@ public class AccountsService {
     }
 
 
-    @Transactional
-    public void transferMoney(TransferMoneyDTO dto) throws InterruptedException {
+    @Transactional(propagation = Propagation.REQUIRED, isolation = Isolation.REPEATABLE_READ)
+    public BigDecimal transferMoney(UUID uid, UUID fromId, UUID toId, BigDecimal money) throws InterruptedException {
 //        boolean active = TransactionSynchronizationManager.isActualTransactionActive();
 //        System.out.println("Транзакция активна? " + active);
 
-        BigDecimal quantity = dto.getQuantity();
-        System.out.println(quantity);
 
-        Account from = accountsRepository.findByIdForUpdate(dto.getFrom())
+
+
+        Account from = accountsRepository.findByIdForUpdate(fromId)
                 .orElseThrow(() -> new IllegalArgumentException("Счет отправителя не найден"));
 
-        Account to = accountsRepository.findByIdForUpdate(dto.getTo())
+        Account to = accountsRepository.findByIdForUpdate(toId)
                 .orElseThrow(() -> new IllegalArgumentException("Счет получателя не найден"));
 
-        if (from.getBalance().compareTo(quantity) < 0) {
+        if (from.getBalance().compareTo(money) < 0) {
             throw new IllegalArgumentException("Недостаточно средств на счете");
         }
 
         // для теста пессимистичной блокировки
 //        Thread.sleep(10000);
 
-        from.setBalance(from.getBalance().subtract(quantity));
-        to.setBalance(to.getBalance().add(quantity));
+        from.setBalance(from.getBalance().subtract(money));
+        to.setBalance(to.getBalance().add(money));
         accountsRepository.save(from);
         accountsRepository.save(to);
+
+        return money;
     }
 
     @Transactional
     public Account addMoneyToAccount(UUID id, UUID accountId, BigDecimal money) {
-        Account account = accountsRepository.findByIdForUpdate(accountId)
-                .orElseThrow(() -> new IllegalArgumentException("Account not found"));
+        Account account = this.getAccountById(accountId);
 
         account.setBalance(account.getBalance().add(money));
         accountsRepository.save(account);
 
         return account;
+    }
+
+    @Transactional
+    public Account getAccountById(UUID id) {
+        return accountsRepository.findByIdForUpdate(id).orElseThrow(() -> new IllegalArgumentException("Account not found"));
     }
 
 }

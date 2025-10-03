@@ -30,6 +30,14 @@ logging:
 server:
   port: 3005
 
+
+
+service:
+  currency:
+    url: http://localhost:8080
+
+
+
 # flyway:
 #   enabled: true
 #   locations: classpath:db
