@@ -10,6 +10,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -73,6 +74,10 @@ public class AccountsService {
     @Transactional
     public Account getAccountById(UUID id) {
         return accountsRepository.findByIdForUpdate(id).orElseThrow(() -> new IllegalArgumentException("Account not found"));
+    }
+
+    public List<Account> getAccountsByUserId(UUID id) {
+        return accountsRepository.findAllByUserId(id);
     }
 
 }

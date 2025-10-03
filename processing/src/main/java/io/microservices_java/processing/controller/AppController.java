@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
 
@@ -38,5 +39,12 @@ public class AppController {
             throws InterruptedException {
         exchangeService.exchangeCurrency(uid,accounts.getFrom(),accounts.getTo(),accounts.getQuantity());
         return ResponseEntity.noContent().build();
+    }
+
+
+    @GetMapping("/accounts/{userId}")
+    public List<Account> getAccountsByUserId(@PathVariable UUID userId)
+            throws InterruptedException {
+        return accountsService.getAccountsByUserId(userId);
     }
 }
