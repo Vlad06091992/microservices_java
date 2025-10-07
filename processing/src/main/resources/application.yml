@@ -1,6 +1,6 @@
 spring:
   application:
-    name: processing
+    name: processing-service
 
   jpa:
     show-sql: false       # Hibernate SQL можно отключить, будем смотреть через P6Spy
@@ -38,9 +38,17 @@ service:
 
 
 
+
 # flyway:
 #   enabled: true
 #   locations: classpath:db
 #   url: jdbc:postgresql://localhost:5432/processing
 #   username: java_user
 #   password: java_password
+
+
+eureka:
+ client:
+   service-url:
+     defaultZone: http://localhost:8761/eureka
+
