@@ -28,7 +28,7 @@ logging:
     org.springframework.transaction: DEBUG
 
 server:
-  port: 3005
+  port: 3001
 
 
 
