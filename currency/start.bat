@@ -34,15 +34,14 @@ docker network create app-network >nul 2>&1
 
 echo Запуск инстансов...
 
-
-docker run -d -p 8080:8080 ^
+docker run -d -p 8080:8080 --name currency-service-1 ^
   -e SPRING_PROFILES_ACTIVE=cloud ^
   -e EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://host.docker.internal:8761/eureka/ ^
   -e SPRING_APPLICATION_NAME=currency-service ^
   -e SERVER_PORT=8080 ^
   currency-service
 
-docker run -d -p 8081:8081 ^
+docker run -d -p 8081:8081 --name currency-service-2 ^
   -e SPRING_PROFILES_ACTIVE=cloud ^
   -e EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://host.docker.internal:8761/eureka/ ^
   -e SPRING_APPLICATION_NAME=currency-service ^
