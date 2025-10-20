@@ -1,8 +1,9 @@
 eureka:
   client:
-    enabled: true
     service-url:
       defaultZone: http://host.docker.internal:8761/eureka/
+    register-with-eureka: true
+    fetch-registry: true  # Должен быть true!
 
 spring:
   cloud:
@@ -13,7 +14,7 @@ spring:
           lower-case-service-id: true
       routes:
         - id: currency-service
-          uri: http://host.docker.internal:8080
+          uri: lb://currency-service
           predicates:
             - Path=/currency/**
         - id: processing-service

@@ -25,11 +25,30 @@ if errorlevel 1 (
     exit /b 1
 )
 
-echo Запуск контейнера...
-docker stop currency-service >nul 2>&1
-docker rm currency-service >nul 2>&1
-call docker run -d -p 8080:8080 --name currency-service -e SPRING_PROFILES_ACTIVE=cloud currency-service
+echo Остановка старых контейнеров...
+docker stop currency-service-1 currency-service-2 >nul 2>&1
+docker rm currency-service-1 currency-service-2 >nul 2>&1
 
-echo Currency service started!
-echo Доступно по: http://localhost:8080
+echo Создание сети (если нет)...
+docker network create app-network >nul 2>&1
+
+echo Запуск инстансов...
+
+
+docker run -d -p 8080:8080 ^
+  -e SPRING_PROFILES_ACTIVE=cloud ^
+  -e EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://host.docker.internal:8761/eureka/ ^
+  -e SPRING_APPLICATION_NAME=currency-service ^
+  -e SERVER_PORT=8080 ^
+  currency-service
+
+docker run -d -p 8081:8081 ^
+  -e SPRING_PROFILES_ACTIVE=cloud ^
+  -e EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://host.docker.internal:8761/eureka/ ^
+  -e SPRING_APPLICATION_NAME=currency-service ^
+  -e SERVER_PORT=8081 ^
+  currency-service
+
+echo Оба инстанса currency-service запущены!
+echo Проверьте Eureka: http://localhost:8761
 pause

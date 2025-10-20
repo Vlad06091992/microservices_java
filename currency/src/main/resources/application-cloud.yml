@@ -1,7 +1,29 @@
+spring:
+  application:
+    name: currency-service
+
 eureka:
   client:
     enabled: true
     service-url:
       defaultZone: http://host.docker.internal:8761/eureka/
+    register-with-eureka: true  # ДОЛЖЕН БЫТЬ TRUE!
+    fetch-registry: false
+  instance:
+    instance-id: ${spring.application.name}:${server.port}
+    hostname: host.docker.internal
+    prefer-ip-address: false
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10
 
-# в настройках ide Active profiles: cloud
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+  endpoint:
+    health:
+      show-details: always
+
+server:
+  port: 8080
