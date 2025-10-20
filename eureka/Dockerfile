@@ -5,7 +5,7 @@ FROM openjdk:24-ea-17-jdk-slim
 WORKDIR /app
 
 # Копируем JAR файл приложения
-COPY target/currency-0.0.1-SNAPSHOT.jar app.jar
+COPY target/eureka-0.0.1-SNAPSHOT.jar app.jar
 
 # Открываем порт (стандартный для Spring Boot)
 EXPOSE 3000

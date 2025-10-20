@@ -1,10 +1,10 @@
-server:
-  port: 3001
+eureka:
+  client:
+    enabled: true
+    service-url:
+      defaultZone: http://host.docker.internal:8761/eureka/
 
 spring:
-  application:
-    name: gateway-service
-
   cloud:
     gateway:
       discovery:
@@ -13,18 +13,13 @@ spring:
           lower-case-service-id: true
       routes:
         - id: currency-service
-          uri: http://localhost:3000
+          uri: http://host.docker.internal:8080
           predicates:
             - Path=/currency/**
         - id: processing-service
-          uri: http://localhost:3001
+          uri: http://host.docker.internal:8085
           predicates:
             - Path=/processing/**
-
-eureka:
-  client:
-    service-url:
-      defaultZone: http://localhost:8761/eureka/
 
 logging:
   level:

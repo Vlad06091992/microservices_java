@@ -1,0 +1,17 @@
+1) currency-service
+обычный http://localhost:8080
+докер http://host.docker.internal:8080
+
+2) processing-service
+обычный http://localhost:8085
+докер http://host.docker.internal:8085
+
+3) eureka-service
+обычный http://localhost:8761
+для подключения
+докер http://host.docker.internal:8761/eureka/
+обычный http://localhost:8761/eureka
+
+4) gateway-service
+обычный http://localhost:3001
+докер http://host.docker.internal:3001
